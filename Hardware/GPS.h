@@ -32,6 +32,7 @@ typedef struct{
 	DATE_TIME D;
 }GPS_INFO;
 
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
 void GPS_Init(UART_HandleTypeDef *GPShuart, UART_HandleTypeDef *DebugHuart);
 const GPS_INFO *get_GPS_INFO();
 

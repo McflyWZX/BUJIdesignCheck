@@ -22,6 +22,8 @@
 #include "dcmi.h"
 #include "dma.h"
 #include "i2c.h"
+#include "spi.h"
+#include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -94,8 +96,12 @@ int main(void)
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_DCMI_Init();
-  MX_UART4_Init();
   MX_I2C1_Init();
+  MX_I2C2_Init();
+  MX_SPI1_Init();
+  MX_UART4_Init();
+  MX_TIM4_Init();
+  MX_TIM5_Init();
   /* USER CODE BEGIN 2 */
   GPS_Init(&huart4, NULL);
   testGPS = get_GPS_INFO();
@@ -168,7 +174,9 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_UART4|RCC_PERIPHCLK_I2C1;
+  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_UART4|RCC_PERIPHCLK_SPI1
+                              |RCC_PERIPHCLK_I2C2|RCC_PERIPHCLK_I2C1;
+  PeriphClkInitStruct.Spi123ClockSelection = RCC_SPI123CLKSOURCE_PLL;
   PeriphClkInitStruct.Usart234578ClockSelection = RCC_USART234578CLKSOURCE_D2PCLK1;
   PeriphClkInitStruct.I2c123ClockSelection = RCC_I2C123CLKSOURCE_D2PCLK1;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)

@@ -1,0 +1,8 @@
+TypeConvertor.c:22:9:Str_To_Int	32	static
+TypeConvertor.c:76:9:Get_Int_Number	40	static
+TypeConvertor.c:95:7:Str_To_Float	40	static
+TypeConvertor.c:168:7:Get_Float_Number	40	static
+TypeConvertor.c:187:8:Str_To_Double	48	static
+TypeConvertor.c:259:8:Get_Double_Number	56	static
+TypeConvertor.c:278:9:GetComma	24	static
+TypeConvertor.c:301:6:Int_To_Str	40	static

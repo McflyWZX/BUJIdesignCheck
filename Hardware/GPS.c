@@ -3,9 +3,12 @@
 #define NUMPARSERS 3
 #define GPSBUAD 38400
 
+uint8_t GPS_RMC_Parse(GPS_INFO *GPS, uint8_t *line);
+uint8_t GPS_GGA_Parse(GPS_INFO *GPS, uint8_t *line);
+uint8_t GPS_GSV_Parse(GPS_INFO *GPS, uint8_t *line);
 UART_HandleTypeDef *mGPSuart, *DebugHuart;
-uint8_t isDebug = 0, recvChr, recvBuf[30], recvCount = 0, gpsFlag = 0, recvFlag = 0;
-uint8_t (*GPS_Parsers[])(GPS_INFO, int8_t) = {GPS_RMC_Parse, GPS_GGA_Parse, GPS_GSV_Parse};
+uint8_t isDebug = 0, recvChr, recvBuf[60], recvCount = 0, gpsFlag = 0, recvFlag = 0;
+uint8_t (*GPS_Parsers[])(GPS_INFO*, uint8_t*) = {GPS_RMC_Parse, GPS_GGA_Parse, GPS_GSV_Parse};
 GPS_INFO mGPS;
 
 void GPS_Init(UART_HandleTypeDef *GPShuart, UART_HandleTypeDef *DebugHuart)
@@ -27,19 +30,19 @@ const GPS_INFO * get_GPS_INFO()
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
 	UNUSED(huart);
-	if((recvBuf == '$') && (gpsFlag == 0))  //如果收到字符'$'，便开始接收
+	if(recvChr == '$')  //如果收到字符'$'，便开始接收
 	{
 		recvFlag = 1;
-    recvBuf[0] = '$';
-  }
-	if(recvFlag == 1)  //标志位为1，开始接收
+		recvBuf[0] = '$';
+    	recvCount = 1;
+  } else if(recvFlag == 1)  //标志位为1，开始接收
 	{
-		recvBuf[recvCount++] = recvBuf;  //字符存到数组中
-		if(recvBuf == '\n')     //如果接收到换行
+		recvBuf[recvCount++] = recvChr;  //字符存到数组中
+		if(recvChr == '\n')     //如果接收到换行
 		{
 			recvBuf[recvCount] = '\0';
-      recvFlag = 0;
-      gpsFlag = 1;
+		  recvFlag = 0;
+			  gpsFlag = 1;
 			recvCount = 1;
 		}
 	}
@@ -63,13 +66,13 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 //			 1: 解析GPRMC完毕
 //           0: 没有进行解析，或数据无效
 //====================================================================//
-uint8_t GPS_RMC_Parse(GPS_INFO *GPS, int8_t *line)
+uint8_t GPS_RMC_Parse(GPS_INFO *GPS, uint8_t *line)
 {
 	uint8_t ch, status, tmp;
 	float lati_cent_tmp, lati_second_tmp;
 	float long_cent_tmp, long_second_tmp;
 	float speed_tmp;
-	int8_t *buf = line;
+	uint8_t *buf = line;
 	ch = buf[5];
 	status = buf[GetComma(2, buf)];
 
@@ -124,10 +127,10 @@ uint8_t GPS_RMC_Parse(GPS_INFO *GPS, int8_t *line)
 //			 1: 解析GPGGA完毕
 //           0: 没有进行解析，或数据无效
 //====================================================================//
-uint8_t GPS_GGA_Parse(GPS_INFO *GPS, int8_t *line)
+uint8_t GPS_GGA_Parse(GPS_INFO *GPS, uint8_t *line)
 {
 	uint8_t ch, status;
-	int8_t *buf = line;
+	uint8_t *buf = line;
 	ch = buf[4];
 	status = buf[GetComma(2, buf)];
 
@@ -153,10 +156,10 @@ uint8_t GPS_GGA_Parse(GPS_INFO *GPS, int8_t *line)
 //			 1: 解析GPGGA完毕
 //           0: 没有进行解析，或数据无效
 //====================================================================//
-uint8_t GPS_GSV_Parse(GPS_INFO *GPS, int8_t *line)
+uint8_t GPS_GSV_Parse(GPS_INFO *GPS, uint8_t *line)
 {
 	uint8_t ch;
-	int8_t *buf = line;
+	uint8_t *buf = line;
 	ch = buf[5];
 
 	if (ch == 'V')  //$GPGSV
