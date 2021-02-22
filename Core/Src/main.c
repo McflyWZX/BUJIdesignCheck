@@ -37,7 +37,6 @@ extern DCMI_HandleTypeDef hdcmi;
 extern I2C_HandleTypeDef hi2c1;		//DCMI SCCB接口
 extern I2C_HandleTypeDef hi2c2;		//JY61
 extern UART_HandleTypeDef huart4;
-
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -46,7 +45,7 @@ extern UART_HandleTypeDef huart4;
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-
+const GPS_INFO *testGPS;
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -99,6 +98,7 @@ int main(void)
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
   GPS_Init(&huart4, NULL);
+  testGPS = get_GPS_INFO();
   /* USER CODE END 2 */
 
   /* Infinite loop */
