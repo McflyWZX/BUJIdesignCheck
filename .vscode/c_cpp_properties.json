@@ -4,6 +4,7 @@
       "name": "STM32",
       "includePath": [
         "${workspaceFolder}/HardWare/",
+        "${workspaceFolder}/ToolsCore/",
         "${workspaceFolder}/Drivers/STM32H7xx_HAL_Driver/Inc/",
         "${workspaceFolder}/Drivers/STM32H7xx_HAL_Driver/Inc/Legacy/",
         "${workspaceFolder}/Drivers/CMSIS/Device/ST/STM32H7xx/Include/",

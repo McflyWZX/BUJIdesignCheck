@@ -22,13 +22,15 @@
 #include "dcmi.h"
 #include "dma.h"
 #include "i2c.h"
+#include "spi.h"
+#include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "OV2640.h"
-
+#include "GPS.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -37,7 +39,6 @@ extern DCMI_HandleTypeDef hdcmi;
 extern I2C_HandleTypeDef hi2c1;		//DCMI SCCB接口
 extern I2C_HandleTypeDef hi2c2;		//JY61
 extern UART_HandleTypeDef huart4;
-
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -46,7 +47,7 @@ extern UART_HandleTypeDef huart4;
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-
+const GPS_INFO *testGPS;
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -95,19 +96,15 @@ int main(void)
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_DCMI_Init();
-  MX_UART4_Init();
   MX_I2C1_Init();
+  MX_I2C2_Init();
+  MX_SPI1_Init();
+  MX_UART4_Init();
+  MX_TIM4_Init();
+  MX_TIM5_Init();
   /* USER CODE BEGIN 2 */
-  HAL_GPIO_WritePin(DCMI_RESET_GPIO_Port, DCMI_RESET_Pin, GPIO_PIN_RESET);
-  HAL_Delay(100);
-  HAL_GPIO_WritePin(DCMI_RESET_GPIO_Port, DCMI_RESET_Pin, GPIO_PIN_SET);
-  HAL_Delay(400);
-  if(OV2640_Init(&hi2c1, &hdcmi, &huart4) == 0)
-  {
-	  HAL_GPIO_WritePin(LED_DCMI_GPIO_Port, LED_DCMI_Pin, GPIO_PIN_RESET);
-  }
-  HAL_Delay(2000);
-  StartOV2640();
+  GPS_Init(&huart4, NULL);
+  testGPS = get_GPS_INFO();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -177,7 +174,9 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_UART4|RCC_PERIPHCLK_I2C1;
+  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_UART4|RCC_PERIPHCLK_SPI1
+                              |RCC_PERIPHCLK_I2C2|RCC_PERIPHCLK_I2C1;
+  PeriphClkInitStruct.Spi123ClockSelection = RCC_SPI123CLKSOURCE_PLL;
   PeriphClkInitStruct.Usart234578ClockSelection = RCC_USART234578CLKSOURCE_D2PCLK1;
   PeriphClkInitStruct.I2c123ClockSelection = RCC_I2C123CLKSOURCE_D2PCLK1;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
