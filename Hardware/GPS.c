@@ -50,6 +50,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 			if(GPS_Parsers[i](&mGPS, recvBuf))
 				break;
 		}
+		gpsFlag = 0;
 	}
 	HAL_UART_Receive_IT(mGPSuart, &recvChr, 1);
 }
