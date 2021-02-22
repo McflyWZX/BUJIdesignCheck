@@ -2,7 +2,6 @@
 #define __TYPECONVERTOR_H_
 
 #include "stm32h7xx_hal.h"
-#include "string.h"
 
 uint8_t GetComma(uint8_t num,uint8_t* str);
 int32_t Get_Int_Number(uint8_t *s);

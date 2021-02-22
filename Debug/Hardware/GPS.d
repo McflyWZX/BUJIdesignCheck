@@ -34,7 +34,8 @@ Hardware/GPS.o: ../Hardware/GPS.c ../Hardware/GPS.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_tim_ex.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart.h \
  ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h \
- C:/Users/Abner/Documents/Code/BUJIdesignCheck/ToolsCore/TypeConvertor.h
+ C:/Users/Abner/Documents/Code/BUJIdesignCheck/ToolsCore/TypeConvertor.h \
+ ../Core/Inc/main.h
 
 ../Hardware/GPS.h:
 
@@ -109,3 +110,5 @@ Hardware/GPS.o: ../Hardware/GPS.c ../Hardware/GPS.h \
 ../Drivers/STM32H7xx_HAL_Driver/Inc/stm32h7xx_hal_uart_ex.h:
 
 C:/Users/Abner/Documents/Code/BUJIdesignCheck/ToolsCore/TypeConvertor.h:
+
+../Core/Inc/main.h:

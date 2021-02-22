@@ -6,8 +6,9 @@
 uint8_t GPS_RMC_Parse(GPS_INFO *GPS, uint8_t *line);
 uint8_t GPS_GGA_Parse(GPS_INFO *GPS, uint8_t *line);
 uint8_t GPS_GSV_Parse(GPS_INFO *GPS, uint8_t *line);
+void UTC2BTC(DATE_TIME *date_time);
 UART_HandleTypeDef *mGPSuart, *DebugHuart;
-uint8_t isDebug = 0, recvChr, recvBuf[60], recvCount = 0, gpsFlag = 0, recvFlag = 0;
+uint8_t isDebug = 0, recvChr, recvBuf[200], recvCount = 0, gpsFlag = 0, recvFlag = 0, LEDflag = 0;
 uint8_t (*GPS_Parsers[])(GPS_INFO*, uint8_t*) = {GPS_RMC_Parse, GPS_GGA_Parse, GPS_GSV_Parse};
 GPS_INFO mGPS;
 
@@ -51,7 +52,11 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		for (uint32_t i = 0; i < NUMPARSERS; i++)
 		{
 			if(GPS_Parsers[i](&mGPS, recvBuf))
+			{
+				HAL_GPIO_WritePin(LED_GPS_GPIO_Port, LED_GPS_Pin, LEDflag);
+				LEDflag = !LEDflag;
 				break;
+			}
 		}
 		gpsFlag = 0;
 	}

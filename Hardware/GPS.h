@@ -3,6 +3,7 @@
 
 #include "stm32h7xx_hal.h"
 #include "TypeConvertor.h"
+#include "main.h"
 
 typedef struct{
 	int32_t year;  
