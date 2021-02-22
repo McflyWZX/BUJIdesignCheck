@@ -1,6 +1,7 @@
 #include "GPS.h"
 
 #define NUMPARSERS 3
+#define GPSBUAD 38400
 
 UART_HandleTypeDef *mGPSuart, *DebugHuart;
 uint8_t isDebug = 0, recvChr, recvBuf[30], recvCount = 0, gpsFlag = 0, recvFlag = 0;

@@ -32,4 +32,7 @@ typedef struct{
 	DATE_TIME D;
 }GPS_INFO;
 
+void GPS_Init(UART_HandleTypeDef *GPShuart, UART_HandleTypeDef *DebugHuart);
+const GPS_INFO *get_GPS_INFO();
+
 #endif

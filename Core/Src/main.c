@@ -28,7 +28,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "OV2640.h"
-
+#include "GPS.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -98,16 +98,7 @@ int main(void)
   MX_UART4_Init();
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
-  HAL_GPIO_WritePin(DCMI_RESET_GPIO_Port, DCMI_RESET_Pin, GPIO_PIN_RESET);
-  HAL_Delay(100);
-  HAL_GPIO_WritePin(DCMI_RESET_GPIO_Port, DCMI_RESET_Pin, GPIO_PIN_SET);
-  HAL_Delay(400);
-  if(OV2640_Init(&hi2c1, &hdcmi, &huart4) == 0)
-  {
-	  HAL_GPIO_WritePin(LED_DCMI_GPIO_Port, LED_DCMI_Pin, GPIO_PIN_RESET);
-  }
-  HAL_Delay(2000);
-  StartOV2640();
+  GPS_Init(&huart4, NULL);
   /* USER CODE END 2 */
 
   /* Infinite loop */
