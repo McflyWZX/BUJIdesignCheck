@@ -49,7 +49,7 @@ extern UART_HandleTypeDef huart4;
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
 const GPS_INFO *testGPS;
-float testAngle;
+Atti testAngle;
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -116,7 +116,7 @@ int main(void)
   {
     /* USER CODE END WHILE */
     /* USER CODE BEGIN 3 */
-    testAngle = jy61p.ReadAngle(ROLL);
+    testAngle = jy61p.getAtti();
   }
   /* USER CODE END 3 */
 }

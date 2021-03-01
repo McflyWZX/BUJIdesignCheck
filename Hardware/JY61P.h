@@ -16,8 +16,16 @@
 #define		YAW			0x3f
 
 typedef struct{
+	float yaw;
+	float roll;
+	float pitch;
+} Atti;
+
+typedef struct{
   void (*Init)(I2C_HandleTypeDef *hi2c);
   float (*ReadAngle)(uint8_t axis);
+  Atti (*getAtti)(void);
+  Atti atti;
 } JY;
 
 extern JY jy61p;
