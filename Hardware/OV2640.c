@@ -216,25 +216,6 @@ void SCCB_WriteRegs(const uint8_t* pbuf)
 	}
 }
 
-
-/*void ov2640_thread_init()
-{
-
-	osSemaphoreDef(SEM_TakePhoto);
-	sem_TakePhoto = osSemaphoreCreate(osSemaphore(SEM_TakePhoto) , 1);
-
-	osSemaphoreDef(SEM_GetPhoto);
-	sem_GetPhoto = osSemaphoreCreate(osSemaphore(SEM_GetPhoto) , 1);
-
-	osThreadDef(ov2640Task, StartOV2640Task, osPriorityNormal, 0, 128);
-	ov2640TaskHandle = osThreadCreate(osThread(ov2640Task), NULL);
-}
-
-void ov2640_realseTakePhotoSem()//回调里调用，用来释放拍照信号量
-{
-	osSemaphoreRelease(sem_TakePhoto);
-}*/
-
 void StartOV2640()//拍照的线程
 {
 

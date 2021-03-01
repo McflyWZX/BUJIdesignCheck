@@ -7,5 +7,5 @@ OV2640.c:79:6:OV2640_JPEGConfig	24	static
 OV2640.c:168:6:OV2640_BrightnessConfig	16	static
 OV2640.c:178:6:OV2640_AutoExposure	16	static
 OV2640.c:204:6:SCCB_WriteRegs	16	static
-OV2640.c:238:6:StartOV2640	8	static
-OV2640.c:247:6:HAL_DCMI_FrameEventCallback	24	static
+OV2640.c:219:6:StartOV2640	8	static
+OV2640.c:228:6:HAL_DCMI_FrameEventCallback	24	static

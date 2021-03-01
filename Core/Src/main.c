@@ -31,6 +31,7 @@
 /* USER CODE BEGIN Includes */
 #include "OV2640.h"
 #include "GPS.h"
+#include <JY61P.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -48,6 +49,7 @@ extern UART_HandleTypeDef huart4;
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
 const GPS_INFO *testGPS;
+Atti testAngle;
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -104,6 +106,7 @@ int main(void)
   MX_TIM5_Init();
   /* USER CODE BEGIN 2 */
   GPS_Init(&huart4, NULL);
+  jy61p.Init(&hi2c2);
   testGPS = get_GPS_INFO();
   /* USER CODE END 2 */
 
@@ -112,8 +115,8 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
     /* USER CODE BEGIN 3 */
+    testAngle = jy61p.getAtti();
   }
   /* USER CODE END 3 */
 }

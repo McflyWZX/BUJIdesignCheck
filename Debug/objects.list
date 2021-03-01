@@ -34,5 +34,6 @@
 "Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart.o"
 "Drivers/STM32H7xx_HAL_Driver/Src/stm32h7xx_hal_uart_ex.o"
 "Hardware/GPS.o"
+"Hardware/JY61P.o"
 "Hardware/OV2640.o"
 "ToolsCore/TypeConvertor.o"
