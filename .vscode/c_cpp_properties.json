@@ -4,6 +4,7 @@
       "name": "STM32",
       "includePath": [
         "${workspaceFolder}/HardWare/",
+        "${workspaceFolder}/SX1280/",
         "${workspaceFolder}/ToolsCore/",
         "${workspaceFolder}/Drivers/STM32H7xx_HAL_Driver/Inc/",
         "${workspaceFolder}/Drivers/STM32H7xx_HAL_Driver/Inc/Legacy/",
