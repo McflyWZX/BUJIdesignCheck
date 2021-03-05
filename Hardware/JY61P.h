@@ -11,18 +11,24 @@
 #include "stm32h7xx_hal.h"
 
 #define 	JY_ADDR		0x50
-#define		ROLL		0x3d
-#define		PITCH		0x3e
-#define		YAW			0x3f
+#define		GX		    0x37
+#define		GY		    0x38
+#define		GZ		    0x39
+#define		ROLL	  	0x3d
+#define		PITCH	  	0x3e
+#define		YAW			  0x3f
 
 typedef struct{
 	float yaw;
 	float roll;
 	float pitch;
+  float gx;
+  float gy;
+  float gz;
 } Atti;
 
 typedef struct{
-  void (*Init)(I2C_HandleTypeDef *hi2c);
+  void (*init)(I2C_HandleTypeDef *hi2c);
   float (*ReadAngle)(uint8_t axis);
   Atti (*getAtti)(void);
   Atti atti;

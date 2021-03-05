@@ -106,7 +106,7 @@ int main(void)
   MX_TIM5_Init();
   /* USER CODE BEGIN 2 */
   GPS_Init(&huart4, NULL);
-  jy61p.Init(&hi2c2);
+  jy61p.init(&hi2c2);
   testGPS = get_GPS_INFO();
   /* USER CODE END 2 */
 
