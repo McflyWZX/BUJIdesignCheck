@@ -39,6 +39,10 @@ typedef struct {
   float deltaT;
   PIDparams params[3];
   void (*Init)(float Kp, float Ki, float Kd, float LimitI, float deltaT, uint32_t throttleMax, uint32_t throttleMin);
+  void (*initParams)(uint8_t axis, float Kp, float Ki, float Kd, float LimitI);
+  void (*updateCtrlFrame)(Atti nowAtti, Atti expectAtti);
 } PIDctrler;
+
+extern PIDctrler ctrler;
 
 #endif

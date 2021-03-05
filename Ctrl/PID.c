@@ -5,7 +5,9 @@ PIDctrler ctrler = {
   0, 
   0,
   {0},
-  init
+  init,
+  initParams,
+  updateCtrlFrame
 };
 
 void init(float deltaT, uint32_t throttleMax, uint32_t throttleMin)
