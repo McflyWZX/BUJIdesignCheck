@@ -7,20 +7,22 @@
 
 #include <JY61P.h>
 
+void initJY61P(I2C_HandleTypeDef *hi2c);
+float readAngle(uint8_t axis);
+
 I2C_HandleTypeDef *mHi2c;
 
-void init(I2C_HandleTypeDef *hi2c);
-float readAngle(uint8_t axis);
+
 Atti getAtti();
 
 JY jy61p = {
-  init,
+  initJY61P,
   readAngle,
   getAtti,
   {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}
 };
 
-void init(I2C_HandleTypeDef *hi2c)
+void initJY61P(I2C_HandleTypeDef *hi2c)
 {
   mHi2c = hi2c;
 }
