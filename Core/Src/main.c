@@ -104,10 +104,17 @@ int main(void)
   MX_UART4_Init();
   MX_TIM4_Init();
   MX_TIM5_Init();
+  MX_TIM16_Init();
   /* USER CODE BEGIN 2 */
-  GPS_Init(&huart4, NULL);
-  jy61p.init(&hi2c2);
-  testGPS = get_GPS_INFO();
+
+  /*TIM5->CCR4 = 2000;
+  HAL_Delay(2000);
+  TIM5->CCR4 = 1000;
+  int dir = +1;*/
+
+  //GPS_Init(&huart4, NULL);
+  //jy61p.init(&hi2c2);
+  //testGPS = get_GPS_INFO();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -115,8 +122,14 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+
     /* USER CODE BEGIN 3 */
-    testAngle = jy61p.getAtti();
+    /*
+      HAL_Delay(100);
+      TIM5->CCR4 += 10 * dir;
+      if(TIM5->CCR4 <= 2000 || TIM5->CCR4 >= 3500)dir = -dir;
+      */
+    //testAngle = jy61p.getAtti();
   }
   /* USER CODE END 3 */
 }
