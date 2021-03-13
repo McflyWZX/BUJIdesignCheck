@@ -12,6 +12,12 @@ uint8_t isDebug = 0, recvChr, recvBuf[200], recvCount = 0, gpsFlag = 0, recvFlag
 uint8_t (*GPS_Parsers[])(GPS_INFO*, uint8_t*) = {GPS_RMC_Parse, GPS_GGA_Parse, GPS_GSV_Parse};
 GPS_INFO mGPS;
 
+/**
+  * @brief  GPS模块初始化.
+  * @param  GPShuart: UART_HandleTypeDef变量，表示与GPS通讯使用到的串口端口
+	* @param  DebugHuart: UART_HandleTypeDef变量，表示与调试使用的串口端口，没有则传NULL
+  * @retval none
+  */
 void GPS_Init(UART_HandleTypeDef *GPShuart, UART_HandleTypeDef *DebugHuart)
 {
   if(DebugHuart != NULL)
@@ -23,6 +29,10 @@ void GPS_Init(UART_HandleTypeDef *GPShuart, UART_HandleTypeDef *DebugHuart)
   HAL_UART_Receive_IT(mGPSuart, &recvChr, 1);
 }
 
+/**
+  * @brief  获取GPS信息常量结构体.
+  * @retval GPS_INFO常量指针
+  */
 const GPS_INFO * get_GPS_INFO()
 {
 	return (const GPS_INFO *)(&mGPS);

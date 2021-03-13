@@ -22,11 +22,21 @@ JY jy61p = {
   {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f}
 };
 
+/**
+  * @brief  初始JY61P.
+  * @param  hi2c: I2C_HandleTypeDef结构体，表示JY61P使用的I2C端口
+  * @retval None
+  */
 void initJY61P(I2C_HandleTypeDef *hi2c)
 {
   mHi2c = hi2c;
 }
 
+/**
+  * @brief  读取一个轴的角度值.
+  * @param  axis: 表示希望读取的轴向，如：ROLL
+  * @retval 角度值
+  */
 float readAngle(uint8_t axis)
 {
   uint8_t data[2] = {0, 0};
@@ -34,6 +44,10 @@ float readAngle(uint8_t axis)
   return ((data[1] << 8) | data[0]) / 32768.0f * 180;
 }
 
+/**
+  * @brief  获取当前姿态.
+  * @retval 当前姿态结构体.
+  */
 Atti getAtti()
 {
 	jy61p.atti.pitch = jy61p.ReadAngle(PITCH);

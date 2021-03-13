@@ -57,6 +57,15 @@ void initPID(float deltaT)
   ctrler.deltaT = deltaT;
 }
 
+/**
+  * @brief  初始化一个轴向的控制器参数.
+  * @param  axis: 轴向，例如:PARAM_ROLL
+  * @param  Kp: 比例控制器的K.
+  * @param  Ki: 积分控制器的K.
+  * @param  Kd: 微分控制器的K.
+  * @param  LimitI: 积分限幅，正数.
+  * @retval None
+  */
 void initParams(uint8_t axis, float Kp, float Ki, float Kd, float LimitI)
 {
   ctrler.params[axis].Kp = Kp;
@@ -77,6 +86,12 @@ void initParams(uint8_t axis, float Kp, float Ki, float Kd, float LimitI)
  *   3    4
  *  右手螺旋
  * **********************/
+/**
+  * @brief  控制量更新一次.
+  * @param  nowAtti: 当前姿态.
+  * @param  expectAtti: 期望姿态.
+  * @retval None
+  */
 void updateCtrlFrame(Atti nowAtti, Atti expectAtti)
 {
   float Out[3];
@@ -87,6 +102,9 @@ void updateCtrlFrame(Atti nowAtti, Atti expectAtti)
   for (uint32_t i = 0; i < 3; i++)
   {
     ctrler.params[i].Integral += error[i] * ctrler.deltaT;
+    //积分限幅
+    ctrler.params[i].Integral = LIMIT(-ctrler.params[i].LimitI, ctrler.params[i].LimitI, ctrler.params[i].Integral);
+    //输出计算
     Out[i] = ctrler.params[i].Kp * error[i] + ctrler.params[i].Ki * ctrler.params[i].Integral - ctrler.params[i].Kd * gyro[i];
   }
   THROTTLE1( - Out[PARAM_ROLL] + Out[PARAM_PITCH]);
