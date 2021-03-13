@@ -3,13 +3,17 @@
 void initPID(float deltaT);
 void initParams(uint8_t axis, float Kp, float Ki, float Kd, float LimitI);
 void updateCtrlFrame(Atti nowAtti, Atti expectAtti);
+void throttleInit();
+void throttleTest();
 
 PIDctrler ctrler = {
   0,
   {{0}, {0}, {0}},
   initPID,
   initParams,
-  updateCtrlFrame
+  updateCtrlFrame,
+  throttleInit,
+  throttleTest
 };
 
 void throttleInit()
@@ -32,7 +36,21 @@ void throttleInit()
 	HAL_Delay(2000);
 }
 
-
+void throttleTest()
+{
+  uint32_t throttle = THROTTLE_MIN;
+  int8_t dir = +1;
+  while(1)
+  {
+    HAL_Delay(100);
+    throttle += (THROTTLE_MAX - THROTTLE_MIN) / 100 * dir;
+    THROTTLE1(throttle);
+	  THROTTLE2(throttle);
+	  THROTTLE3(throttle);
+	  THROTTLE4(throttle);
+    if(throttle <= THROTTLE_MIN || throttle >= (THROTTLE_MAX * 3 / 4))dir = -dir;
+  }
+}
 
 void initPID(float deltaT)
 {
