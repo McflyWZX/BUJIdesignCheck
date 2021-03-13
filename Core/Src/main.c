@@ -106,12 +106,6 @@ int main(void)
   MX_TIM5_Init();
   MX_TIM16_Init();
   /* USER CODE BEGIN 2 */
-
-  /*TIM5->CCR4 = 2000;
-  HAL_Delay(2000);
-  TIM5->CCR4 = 1000;
-  int dir = +1;*/
-
   //GPS_Init(&huart4, NULL);
   //jy61p.init(&hi2c2);
   //testGPS = get_GPS_INFO();
@@ -124,11 +118,6 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    /*
-      HAL_Delay(100);
-      TIM5->CCR4 += 10 * dir;
-      if(TIM5->CCR4 <= 2000 || TIM5->CCR4 >= 3500)dir = -dir;
-      */
     //testAngle = jy61p.getAtti();
   }
   /* USER CODE END 3 */
