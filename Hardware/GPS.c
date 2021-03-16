@@ -38,7 +38,7 @@ const GPS_INFO * get_GPS_INFO()
 	return (const GPS_INFO *)(&mGPS);
 }
 
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+/*void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
 	UNUSED(huart);
 	if(recvChr == '$')  //如果收到字符'$'，便开始接收
@@ -71,7 +71,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		gpsFlag = 0;
 	}
 	HAL_UART_Receive_IT(mGPSuart, &recvChr, 1);
-}
+}*/
 
 //====================================================================//
 // 语法格式：int GPS_RMC_Parse(int8_t *line, GPS_INFO *GPS)  
