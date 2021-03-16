@@ -10,7 +10,7 @@
  *      |         |
  *   2    1
  *    \  /
- *     \/    -->Pitch
+ *     \/    <--Pitch
  *     /\
  *    /  \
  *   3    4
@@ -46,8 +46,8 @@ typedef struct {
   PIDparams params[3];
   void (*Init)(float deltaT);
   void (*initParams)(uint8_t axis, float Kp, float Ki, float Kd, float LimitI);
-  void (*updateCtrlFrame)(Atti nowAtti, Atti expectAtti);
-  void (*throttleInit)(void);
+  void (*updateCtrlFrame)(Atti nowAtti, Atti expectAtti, uint32_t throttle);
+  void (*throttleInit)(uint8_t withCalibration);
   void (*throttleTest)(void);
 } PIDctrler;
 

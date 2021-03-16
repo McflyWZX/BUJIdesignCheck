@@ -52,7 +52,9 @@ Atti getAtti()
 {
 	jy61p.atti.pitch = jy61p.ReadAngle(PITCH);
 	jy61p.atti.roll = jy61p.ReadAngle(ROLL);
-	jy61p.atti.yaw = jy61p.ReadAngle(YAW);
+  if(jy61p.atti.roll >= 180)
+    jy61p.atti.roll -= 360;
+  jy61p.atti.yaw = jy61p.ReadAngle(YAW);
   jy61p.atti.gx = jy61p.ReadAngle(GX);
   jy61p.atti.gy = jy61p.ReadAngle(GY);
   jy61p.atti.gz = jy61p.ReadAngle(GZ);

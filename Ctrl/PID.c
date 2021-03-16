@@ -2,8 +2,8 @@
 
 void initPID(float deltaT);
 void initParams(uint8_t axis, float Kp, float Ki, float Kd, float LimitI);
-void updateCtrlFrame(Atti nowAtti, Atti expectAtti);
-void throttleInit();
+void updateCtrlFrame(Atti nowAtti, Atti expectAtti, uint32_t throttle);
+void throttleInit(uint8_t withCalibration);
 void throttleTest();
 
 PIDctrler ctrler = {
@@ -16,19 +16,22 @@ PIDctrler ctrler = {
   throttleTest
 };
 
-void throttleInit()
+void throttleInit(uint8_t withCalibration)
 {
-	HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_4);
-	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
-	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
-	HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1);
+	if(withCalibration)
+	{
+		HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_4);
+		HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
+		HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
+		HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1);
 
-	HAL_Delay(100);
-	THROTTLE1(THROTTLE_MAX);
-	THROTTLE2(THROTTLE_MAX);
-	THROTTLE3(THROTTLE_MAX);
-	THROTTLE4(THROTTLE_MAX);
-	HAL_Delay(3000);
+		HAL_Delay(100);
+		THROTTLE1(THROTTLE_MAX);
+		THROTTLE2(THROTTLE_MAX);
+		THROTTLE3(THROTTLE_MAX);
+		THROTTLE4(THROTTLE_MAX);
+		HAL_Delay(3000);
+	}
 	THROTTLE1(THROTTLE_MIN);
 	THROTTLE2(THROTTLE_MIN);
 	THROTTLE3(THROTTLE_MIN);
@@ -92,9 +95,9 @@ void initParams(uint8_t axis, float Kp, float Ki, float Kd, float LimitI)
   * @param  expectAtti: 期望姿态.
   * @retval None
   */
-void updateCtrlFrame(Atti nowAtti, Atti expectAtti)
+void updateCtrlFrame(Atti nowAtti, Atti expectAtti, uint32_t throttle)
 {
-  float Out[3];
+  uint32_t Out[3];
   float error[3] = {expectAtti.roll - nowAtti.roll, 
                     expectAtti.pitch - nowAtti.pitch, 
                     expectAtti.yaw - nowAtti.yaw};
@@ -105,11 +108,11 @@ void updateCtrlFrame(Atti nowAtti, Atti expectAtti)
     //积分限幅
     ctrler.params[i].Integral = LIMIT(-ctrler.params[i].LimitI, ctrler.params[i].LimitI, ctrler.params[i].Integral);
     //输出计算
-    Out[i] = ctrler.params[i].Kp * error[i] + ctrler.params[i].Ki * ctrler.params[i].Integral - ctrler.params[i].Kd * gyro[i];
+    Out[i] = (uint32_t)(ctrler.params[i].Kp * error[i] + ctrler.params[i].Ki * ctrler.params[i].Integral - ctrler.params[i].Kd * gyro[i]);
   }
-  THROTTLE1( - Out[PARAM_ROLL] + Out[PARAM_PITCH]);
-  THROTTLE2( + Out[PARAM_ROLL] + Out[PARAM_PITCH]);
-  THROTTLE3( + Out[PARAM_ROLL] - Out[PARAM_PITCH]);
-  THROTTLE4( - Out[PARAM_ROLL] - Out[PARAM_PITCH]);
+  THROTTLE1(throttle - Out[PARAM_ROLL] + Out[PARAM_PITCH] + THROTTLE_MIN);
+  THROTTLE2(throttle + Out[PARAM_ROLL] + Out[PARAM_PITCH] + THROTTLE_MIN);
+  THROTTLE3(throttle + Out[PARAM_ROLL] - Out[PARAM_PITCH] + THROTTLE_MIN);
+  THROTTLE4(throttle - Out[PARAM_ROLL] - Out[PARAM_PITCH] + THROTTLE_MIN);
 }
 

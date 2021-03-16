@@ -29,9 +29,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "OV2640.h"
-#include "GPS.h"
-#include <JY61P.h>
+#include "CtrlCenter.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -105,10 +103,9 @@ int main(void)
   MX_TIM4_Init();
   MX_TIM5_Init();
   MX_TIM16_Init();
+  MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
-  //GPS_Init(&huart4, NULL);
-  //jy61p.init(&hi2c2);
-  //testGPS = get_GPS_INFO();
+  ctrlCent.init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -118,7 +115,6 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    //testAngle = jy61p.getAtti();
   }
   /* USER CODE END 3 */
 }
