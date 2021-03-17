@@ -18,13 +18,12 @@ PIDctrler ctrler = {
 
 void throttleInit(uint8_t withCalibration)
 {
+	HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_4);
+	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
+	HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
+	HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1);
 	if(withCalibration)
 	{
-		HAL_TIM_PWM_Start(&htim5, TIM_CHANNEL_4);
-		HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_2);
-		HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_3);
-		HAL_TIM_PWM_Start(&htim16, TIM_CHANNEL_1);
-
 		HAL_Delay(100);
 		THROTTLE1(THROTTLE_MAX);
 		THROTTLE2(THROTTLE_MAX);
@@ -79,8 +78,8 @@ void initParams(uint8_t axis, float Kp, float Ki, float Kd, float LimitI)
 }
 
 /************************
- *      ^ Roll   /^\FRONT
- *      |         |
+ *       |Roll   /^\FRONT
+ *      \/         |
  *   2    1
  *    \  /
  *     \/    -->Pitch
@@ -97,6 +96,14 @@ void initParams(uint8_t axis, float Kp, float Ki, float Kd, float LimitI)
   */
 void updateCtrlFrame(Atti nowAtti, Atti expectAtti, uint32_t throttle)
 {
+  if(throttle == 0)
+  {
+	  THROTTLE1(THROTTLE_MIN);
+	    THROTTLE2(THROTTLE_MIN);
+	    THROTTLE3(THROTTLE_MIN);
+	    THROTTLE4(THROTTLE_MIN);
+	    return;
+  }
   uint32_t Out[3];
   float error[3] = {expectAtti.roll - nowAtti.roll, 
                     expectAtti.pitch - nowAtti.pitch, 
@@ -110,9 +117,9 @@ void updateCtrlFrame(Atti nowAtti, Atti expectAtti, uint32_t throttle)
     //输出计算
     Out[i] = (uint32_t)(ctrler.params[i].Kp * error[i] + ctrler.params[i].Ki * ctrler.params[i].Integral - ctrler.params[i].Kd * gyro[i]);
   }
-  THROTTLE1(throttle - Out[PARAM_ROLL] + Out[PARAM_PITCH] + THROTTLE_MIN);
-  THROTTLE2(throttle + Out[PARAM_ROLL] + Out[PARAM_PITCH] + THROTTLE_MIN);
-  THROTTLE3(throttle + Out[PARAM_ROLL] - Out[PARAM_PITCH] + THROTTLE_MIN);
-  THROTTLE4(throttle - Out[PARAM_ROLL] - Out[PARAM_PITCH] + THROTTLE_MIN);
+  THROTTLE1(throttle * 20 + THROTTLE_MIN);// + (throttle / 100.0f) * (+Out[PARAM_ROLL] + Out[PARAM_PITCH]));
+  THROTTLE2(throttle * 20 + THROTTLE_MIN);// + (throttle / 100.0f) * (-Out[PARAM_ROLL] + Out[PARAM_PITCH]));
+  THROTTLE3(throttle * 20 + THROTTLE_MIN);// + (throttle / 100.0f) * (-Out[PARAM_ROLL] - Out[PARAM_PITCH]));
+  THROTTLE4(throttle * 20 + THROTTLE_MIN);// + (throttle / 100.0f) * (+Out[PARAM_ROLL] - Out[PARAM_PITCH]));
 }
 

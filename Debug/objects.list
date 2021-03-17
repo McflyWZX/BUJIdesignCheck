@@ -1,3 +1,4 @@
+"Comm/TestUartComm.o"
 "Core/Src/dcmi.o"
 "Core/Src/dma.o"
 "Core/Src/gpio.o"

@@ -39,7 +39,9 @@ Ctrl/CtrlCenter.o: ../Ctrl/CtrlCenter.c ../Ctrl/CtrlCenter.h \
  ../Core/Inc/i2c.h \
  C:/Users/Abner/Documents/Code/BUJIdesignCheck/Hardware/OV2640.h \
  C:/Users/Abner/Documents/Code/BUJIdesignCheck/Hardware/GPS.h \
- C:/Users/Abner/Documents/Code/BUJIdesignCheck/ToolsCore/TypeConvertor.h
+ C:/Users/Abner/Documents/Code/BUJIdesignCheck/ToolsCore/TypeConvertor.h \
+ C:/Users/Abner/Documents/Code/BUJIdesignCheck/Comm/TestUartComm.h \
+ ../Core/Inc/usart.h
 
 ../Ctrl/CtrlCenter.h:
 
@@ -130,3 +132,7 @@ C:/Users/Abner/Documents/Code/BUJIdesignCheck/Hardware/OV2640.h:
 C:/Users/Abner/Documents/Code/BUJIdesignCheck/Hardware/GPS.h:
 
 C:/Users/Abner/Documents/Code/BUJIdesignCheck/ToolsCore/TypeConvertor.h:
+
+C:/Users/Abner/Documents/Code/BUJIdesignCheck/Comm/TestUartComm.h:
+
+../Core/Inc/usart.h:

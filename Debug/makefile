@@ -14,6 +14,7 @@ RM := rm -rf
 -include Ctrl/subdir.mk
 -include Core/Startup/subdir.mk
 -include Core/Src/subdir.mk
+-include Comm/subdir.mk
 -include subdir.mk
 -include objects.mk
 

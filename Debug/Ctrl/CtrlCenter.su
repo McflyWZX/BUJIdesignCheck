@@ -1,2 +1,2 @@
 CtrlCenter.c:13:6:initCtrlCenter	8	static
-CtrlCenter.c:27:6:HAL_TIM_PeriodElapsedCallback	48	static
+CtrlCenter.c:32:6:HAL_TIM_PeriodElapsedCallback	104	static
