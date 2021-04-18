@@ -1,6 +1,0 @@
-GPS.c:21:6:GPS_Init	16	static
-GPS.c:36:18:get_GPS_INFO	4	static
-GPS.c:84:9:GPS_RMC_Parse	48	static
-GPS.c:145:9:GPS_GGA_Parse	24	static
-GPS.c:174:9:GPS_GSV_Parse	24	static
-GPS.c:195:6:UTC2BTC	16	static

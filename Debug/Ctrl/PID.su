@@ -1,5 +1,0 @@
-PID.c:19:6:throttleInit	16	static
-PID.c:41:6:throttleTest	16	static
-PID.c:57:6:initPID	16	static
-PID.c:71:6:initParams	32	static
-PID.c:97:6:updateCtrlFrame	48	static
