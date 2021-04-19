@@ -1,4 +1,17 @@
+/*
+ * @Author: Mcfly
+ * @Date: 2021-04-18 20:52:53
+ * @LastEditTime: 2021-04-19 15:44:51
+ * @LastEditors: Mcfly
+ * @Description: 
+ * @FilePath: \BUJIdesignCheck\Ctrl\CtrlCenter.c
+ * 本人github:https://github.com/McflyWZX
+ */
 #include "CtrlCenter.h"
+
+#define debugVOSCchannels 6
+float debugVOSCDatas[debugVOSCchannels];
+uint8_t skipTimes = 8, skipCount = 0;
 
 void initCtrlCenter();
 
@@ -19,9 +32,10 @@ void initCtrlCenter()
   comm.init(&huart4);
   //testGPS = get_GPS_INFO();
   ctrler.Init(0.005f);
-  ctrler.initParams(PARAM_ROLL, 12, 0, 0, 0);
-  ctrler.initParams(PARAM_PITCH, 0, 0, 0, 0);
+  ctrler.initParams(PARAM_ROLL, 0, 0, 0, 0);
+  ctrler.initParams(PARAM_PITCH, 12, 0, 0, 0);
   ctrler.initParams(PARAM_YAW, 0, 0, 0, 0);
+  initVOT(3, debugVOSCchannels); //axis_Pitch, axis_GyroPitch, thr1, thr2, thr3, thr4
   HAL_TIM_Base_Start_IT(&htim3);
 }
 
@@ -38,6 +52,19 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     expectAtti.pitch = 0;
     expectAtti.yaw = 0;
     ctrler.updateCtrlFrame(nowAtti, expectAtti, comm.getThrottlePercent());
+
+    //Debug用
+    if(skipCount++ >= skipTimes)
+    {
+      debugVOSCDatas[0] = nowAtti.pitch;
+      debugVOSCDatas[1] = nowAtti.gy;
+      debugVOSCDatas[2] = (float)TIM5->CCR4;
+      debugVOSCDatas[3] = (float)TIM4->CCR2;
+      debugVOSCDatas[4] = (float)TIM4->CCR3;
+      debugVOSCDatas[5] = (float)TIM16->CCR1;
+      appendData(debugVOSCDatas);
+      skipCount = 0;
+    }
 
     //LOOP指示灯闪烁
     if(++loopCount >= loopPSK)
