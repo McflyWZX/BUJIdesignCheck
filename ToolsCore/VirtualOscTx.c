@@ -1,30 +1,30 @@
 /*
  * @Author: Mcfly
  * @Date: 2021-04-19 15:14:18
- * @LastEditTime: 2021-04-19 15:24:47
+ * @LastEditTime: 2021-04-19 15:31:04
  * @LastEditors: Mcfly
  * @Description: 
  * @FilePath: \BUJIdesignCheck\ToolsCore\VirtualOscTx.c
- * ±¾ÈËgithub:https://github.com/McflyWZX
+ * æœ¬äººgithub:https://github.com/McflyWZX
  */
 #include "VirtualOscTx.h"
 #include "usart.h"
 
 #define virtualOscUartSend(DAT, LEN) HAL_UART_Transmit_IT(&huart4, DAT, LEN)
-uint8_t* data = NULL;		//´ı´«ÊäµÄÊı¾İ
-uint16_t partSize;	//Ò»´Î·¢ËÍµÄÊı¾İÁ¿
-uint8_t channels;		//×ÜÍ¨µÀÊı
+uint8_t* data = NULL;		//å¾…ä¼ è¾“çš„æ•°æ®
+uint16_t partSize;	//ä¸€æ¬¡å‘é€çš„æ•°æ®é‡
+uint8_t channels;		//æ€»é€šé“æ•°
 uint32_t totalLen8;
 uint8_t stepLen8;
 uint32_t index;
 
 //-------------------------------------------------------------------------------------------------------------------
-//  @brief      ³õÊ¼»¯ĞéÄâÊ¾²¨Æ÷´«ËÍ,¼ÇµÃÔÚlslÎÄ¼şÖĞĞŞ¸Ä¶ÑµÄ´óĞ¡
-//  @param      _partSize		Ã¿´Î·¢ËÍµÄÊı¾İ³¤¶È(Õ¼ÓÃ¿Õ¼ä´óĞ¡Îª(channels + 1) * partSize * 4¸ö×Ö½Ú£¬
-//								ÓÉÓÚ´®¿ÚËÙÂÊ¹ıµÍ£¬ÊÊµ±µ÷´ó´Ë²ÎÊıÒÔ±£Ö¤µ¥´Î·¢ËÍÊı¾İµÄÍêÕûĞÔ
-//  @param      _channels       Ê¾²¨Æ÷Í¨µÀÊı£¨ÈçÒªÏÔÊ¾x×éADCµÄÊı¾İ£¬¸Ã²ÎÊı¾ÍÎªx£©
+//  @brief      åˆå§‹åŒ–è™šæ‹Ÿç¤ºæ³¢å™¨ä¼ é€,è®°å¾—åœ¨lslæ–‡ä»¶ä¸­ä¿®æ”¹å †çš„å¤§å°
+//  @param      _partSize		æ¯æ¬¡å‘é€çš„æ•°æ®é•¿åº¦(å ç”¨ç©ºé—´å¤§å°ä¸º(channels + 1) * partSize * 4ä¸ªå­—èŠ‚ï¼Œ
+//								ç”±äºä¸²å£é€Ÿç‡è¿‡ä½ï¼Œé€‚å½“è°ƒå¤§æ­¤å‚æ•°ä»¥ä¿è¯å•æ¬¡å‘é€æ•°æ®çš„å®Œæ•´æ€§
+//  @param      _channels       ç¤ºæ³¢å™¨é€šé“æ•°ï¼ˆå¦‚è¦æ˜¾ç¤ºxç»„ADCçš„æ•°æ®ï¼Œè¯¥å‚æ•°å°±ä¸ºxï¼‰
 //  @return     void
-//  @Sample usage:               initVOT(100, 2);       // 2Í¨µÀ£¬Ò»´Î·¢ËÍ100¸öÊı¾İ
+//  @Sample usage:               initVOT(100, 2);       // 2é€šé“ï¼Œä¸€æ¬¡å‘é€100ä¸ªæ•°æ®
 //-------------------------------------------------------------------------------------------------------------------
 void initVOT(uint16_t _partSize, uint8_t _channels)
 {
@@ -43,10 +43,10 @@ void initVOT(uint16_t _partSize, uint8_t _channels)
 	index = 0;
 }
 //-------------------------------------------------------------------------------------------------------------------
-//  @brief      ¼ÓÈëÊı¾İµ½´«ËÍÁĞ±íÖĞ£¬µ±Êı¾İÊıÁ¿´ïµ½ÁËpartSize£¬¾Í¿ªÊ¼×èÈûÊ½·¢ËÍ
-//  @param      rawDatas		´ÓADCÖĞ¶ÁÈ¡³öµÄÔ­Ê¼Êı¾İÊı×é£¨Êı×éµÄ´óĞ¡ÎªÍ¨µÀÊı£©
+//  @brief      åŠ å…¥æ•°æ®åˆ°ä¼ é€åˆ—è¡¨ä¸­ï¼Œå½“æ•°æ®æ•°é‡è¾¾åˆ°äº†partSizeï¼Œå°±å¼€å§‹é˜»å¡å¼å‘é€
+//  @param      rawDatas		ä»ADCä¸­è¯»å–å‡ºçš„åŸå§‹æ•°æ®æ•°ç»„ï¼ˆæ•°ç»„çš„å¤§å°ä¸ºé€šé“æ•°ï¼‰
 //  @return     void
-//  @Sample usage:               appendData(adc[2]);       // ×·¼Óµ¥´Î¶ÁÈ¡µÄÁ½¸öÍ¨µÀµÄadcÊı¾İ
+//  @Sample usage:               appendData(adc[2]);       // è¿½åŠ å•æ¬¡è¯»å–çš„ä¸¤ä¸ªé€šé“çš„adcæ•°æ®
 //-------------------------------------------------------------------------------------------------------------------
 void appendData(float* rawDatas)
 {
