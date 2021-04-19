@@ -117,9 +117,11 @@ void updateCtrlFrame(Atti nowAtti, Atti expectAtti, uint32_t throttle)
     //输出计算
     Out[i] = (uint32_t)(ctrler.params[i].Kp * error[i] + ctrler.params[i].Ki * ctrler.params[i].Integral - ctrler.params[i].Kd * gyro[i]);
   }
-  THROTTLE1(throttle * 20 + THROTTLE_MIN);// + (throttle / 100.0f) * (+Out[PARAM_ROLL] + Out[PARAM_PITCH]));
-  THROTTLE2(throttle * 20 + THROTTLE_MIN);// + (throttle / 100.0f) * (-Out[PARAM_ROLL] + Out[PARAM_PITCH]));
-  THROTTLE3(throttle * 20 + THROTTLE_MIN);// + (throttle / 100.0f) * (-Out[PARAM_ROLL] - Out[PARAM_PITCH]));
-  THROTTLE4(throttle * 20 + THROTTLE_MIN);// + (throttle / 100.0f) * (+Out[PARAM_ROLL] - Out[PARAM_PITCH]));
+  //throttle * 20 基础油门值
+  //TODO: 调好PID后改回正常的油门
+  THROTTLE1(THROTTLE_MIN + throttle * 20 * (+ Out[PARAM_ROLL] + Out[PARAM_PITCH]));
+  THROTTLE2(THROTTLE_MIN + throttle * 20 * (- Out[PARAM_ROLL] + Out[PARAM_PITCH]));
+  THROTTLE3(THROTTLE_MIN + throttle * 20 * (- Out[PARAM_ROLL] - Out[PARAM_PITCH]));
+  THROTTLE4(THROTTLE_MIN + throttle * 20 * (+ Out[PARAM_ROLL] - Out[PARAM_PITCH]));
 }
 
