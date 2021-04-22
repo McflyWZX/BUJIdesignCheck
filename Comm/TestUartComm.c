@@ -14,7 +14,7 @@ uint8_t throttlePercent = 0;
 void init(UART_HandleTypeDef *DebugHuart)
 {
   debugHuart = DebugHuart;
-  HAL_UART_Receive_IT(debugHuart, &recvChr, 1);
+  HAL_UART_Receive_DMA(debugHuart, &throttlePercent, 1);
 }
 
 uint8_t getThrottlePercent()
@@ -25,6 +25,6 @@ uint8_t getThrottlePercent()
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
 	UNUSED(huart);
-  throttlePercent = recvChr;
-  HAL_UART_Receive_IT(debugHuart, &recvChr, 1);
+  //throttlePercent = recvChr;
+  HAL_UART_Receive_DMA(debugHuart, &throttlePercent, 1);
 }
