@@ -50,7 +50,7 @@ void throttleTest()
 	  THROTTLE2(throttle);
 	  THROTTLE3(throttle);
 	  THROTTLE4(throttle);
-    if(throttle <= THROTTLE_MIN || throttle >= (THROTTLE_MAX * 3 / 4))dir = -dir;
+    if(throttle <= THROTTLE_MIN || throttle >= (THROTTLE_MAX * 3 / 5))dir = -dir;
   }
 }
 
@@ -102,26 +102,33 @@ void updateCtrlFrame(Atti nowAtti, Atti expectAtti, uint32_t throttle)
 	    THROTTLE2(THROTTLE_MIN);
 	    THROTTLE3(THROTTLE_MIN);
 	    THROTTLE4(THROTTLE_MIN);
+      for(int i = 0; i < 3; i++)
+        ctrler.params[i].Integral = 0;
 	    return;
   }
-  uint32_t Out[3];
+  float tempOut;
+  float Out[3];
   float error[3] = {expectAtti.roll - nowAtti.roll, 
                     expectAtti.pitch - nowAtti.pitch, 
                     expectAtti.yaw - nowAtti.yaw};
   float gyro[3] = {nowAtti.gx, nowAtti.gy, nowAtti.gz}; //TODO: 顺序待测
   for (uint32_t i = 0; i < 3; i++)
   {
+	//TODO:标准化比例限幅
     ctrler.params[i].Integral += error[i] * ctrler.deltaT;
     //积分限幅
     ctrler.params[i].Integral = LIMIT(-ctrler.params[i].LimitI, ctrler.params[i].LimitI, ctrler.params[i].Integral);
     //输出计算
-    Out[i] = (uint32_t)(ctrler.params[i].Kp * error[i] + ctrler.params[i].Ki * ctrler.params[i].Integral - ctrler.params[i].Kd * gyro[i]);
+    Out[i] = LIMIT(-1000, 1000, throttle * ctrler.params[i].Kp * error[i]) + ctrler.params[i].Ki * ctrler.params[i].Integral - LIMIT(-400, 400, ctrler.params[i].Kd * gyro[i]);
   }
   //throttle * 20 基础油门值
   //TODO: 调好PID后改回正常的油门
-  THROTTLE1(THROTTLE_MIN + throttle * 20 * (+ Out[PARAM_ROLL] + Out[PARAM_PITCH]));
-  THROTTLE2(THROTTLE_MIN + throttle * 20 * (- Out[PARAM_ROLL] + Out[PARAM_PITCH]));
-  THROTTLE3(THROTTLE_MIN + throttle * 20 * (- Out[PARAM_ROLL] - Out[PARAM_PITCH]));
-  THROTTLE4(THROTTLE_MIN + throttle * 20 * (+ Out[PARAM_ROLL] - Out[PARAM_PITCH]));
+  if(throttle > 0)
+  {
+	  THROTTLE1((uint32_t)(THROTTLE_MIN + 100 + Out[PARAM_ROLL] + Out[PARAM_PITCH]));
+	  THROTTLE2((uint32_t)(THROTTLE_MIN + 100 - Out[PARAM_ROLL] + Out[PARAM_PITCH]));
+	  THROTTLE3((uint32_t)(THROTTLE_MIN + 100 - Out[PARAM_ROLL] - Out[PARAM_PITCH]));
+	  THROTTLE4((uint32_t)(THROTTLE_MIN + 100 + Out[PARAM_ROLL] - Out[PARAM_PITCH]));
+  }
 }
 
