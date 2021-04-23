@@ -1,7 +1,7 @@
 /*
  * @Author: Mcfly
  * @Date: 2021-04-18 20:52:53
- * @LastEditTime: 2021-04-19 15:44:51
+ * @LastEditTime: 2021-04-22 09:51:12
  * @LastEditors: Mcfly
  * @Description: 
  * @FilePath: \BUJIdesignCheck\Ctrl\CtrlCenter.c
@@ -9,9 +9,9 @@
  */
 #include "CtrlCenter.h"
 
-#define debugVOSCchannels 6
+#define debugVOSCchannels 3
 float debugVOSCDatas[debugVOSCchannels];
-uint8_t skipTimes = 8, skipCount = 0;
+uint8_t skipTimes = 5, skipCount = 0;
 
 void initCtrlCenter();
 
@@ -32,8 +32,9 @@ void initCtrlCenter()
   comm.init(&huart4);
   //testGPS = get_GPS_INFO();
   ctrler.Init(0.005f);
-  ctrler.initParams(PARAM_ROLL, 0, 0, 0, 0);
-  ctrler.initParams(PARAM_PITCH, 12, 0, 0, 0);
+  ctrler.initParams(PARAM_ROLL, 1, 0, 0, 0);
+  //ctrler.initParams(PARAM_PITCH, 17, 48.0, 55, 350); //20 2.5 80
+  ctrler.initParams(PARAM_PITCH, 0, 0, 0, 0); //20 2.5 80
   ctrler.initParams(PARAM_YAW, 0, 0, 0, 0);
   initVOT(3, debugVOSCchannels); //axis_Pitch, axis_GyroPitch, thr1, thr2, thr3, thr4
   HAL_TIM_Base_Start_IT(&htim3);
@@ -58,10 +59,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
     {
       debugVOSCDatas[0] = nowAtti.pitch;
       debugVOSCDatas[1] = nowAtti.gy;
-      debugVOSCDatas[2] = (float)TIM5->CCR4;
-      debugVOSCDatas[3] = (float)TIM4->CCR2;
-      debugVOSCDatas[4] = (float)TIM4->CCR3;
-      debugVOSCDatas[5] = (float)TIM16->CCR1;
+      debugVOSCDatas[2] = comm.getThrottlePercent();
       appendData(debugVOSCDatas);
       skipCount = 0;
     }
