@@ -51,12 +51,17 @@ float readAngle(uint8_t axis)
 Atti getAtti()
 {
 	jy61p.atti.pitch = jy61p.ReadAngle(PITCH);
-	jy61p.atti.roll = jy61p.ReadAngle(ROLL);
+	  if(jy61p.atti.pitch >= 180)
+	    jy61p.atti.pitch -= 360;
+  jy61p.atti.roll = jy61p.ReadAngle(ROLL);
+	//TODO:好像有bug
   if(jy61p.atti.roll >= 180)
     jy61p.atti.roll -= 360;
   jy61p.atti.yaw = jy61p.ReadAngle(YAW);
   jy61p.atti.gx = jy61p.ReadAngle(GX);
   jy61p.atti.gy = jy61p.ReadAngle(GY);
+  if(jy61p.atti.gy >= 180)
+	jy61p.atti.gy -= 360;
   jy61p.atti.gz = jy61p.ReadAngle(GZ);
 	return jy61p.atti;
 }

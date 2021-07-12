@@ -16,7 +16,7 @@ uint16_t partSize;	//一次发送的数据量
 uint8_t channels;		//总通道数
 uint32_t totalLen8;
 uint8_t stepLen8;
-uint32_t index;
+uint32_t dataAppendIndex;
 
 //-------------------------------------------------------------------------------------------------------------------
 //  @brief      初始化虚拟示波器传送,记得在lsl文件中修改堆的大小
@@ -40,7 +40,7 @@ void initVOT(uint16_t _partSize, uint8_t _channels)
 		data[i + 2] = 0x80;
 		data[i + 3] = 0x7f;
 	}
-	index = 0;
+	dataAppendIndex = 0;
 }
 //-------------------------------------------------------------------------------------------------------------------
 //  @brief      加入数据到传送列表中，当数据数量达到了partSize，就开始阻塞式发送
@@ -52,12 +52,12 @@ void appendData(float* rawDatas)
 {
 	for(uint8_t i = 0, j = 0; j < channels; i += 4, j++)
 	{
-		*((float*)(data + index + i)) = rawDatas[j];
+		*((float*)(data + dataAppendIndex + i)) = rawDatas[j];
 	}
-	index += stepLen8;
-	if(index >= totalLen8)
+	dataAppendIndex += stepLen8;
+	if(dataAppendIndex >= totalLen8)
 	{
 		virtualOscUartSend(data, totalLen8);
-		index = 0;
+		dataAppendIndex = 0;
 	}
 }

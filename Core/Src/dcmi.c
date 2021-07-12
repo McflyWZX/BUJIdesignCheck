@@ -31,6 +31,13 @@ DMA_HandleTypeDef hdma_dcmi;
 void MX_DCMI_Init(void)
 {
 
+  /* USER CODE BEGIN DCMI_Init 0 */
+
+  /* USER CODE END DCMI_Init 0 */
+
+  /* USER CODE BEGIN DCMI_Init 1 */
+
+  /* USER CODE END DCMI_Init 1 */
   hdcmi.Instance = DCMI;
   hdcmi.Init.SynchroMode = DCMI_SYNCHRO_HARDWARE;
   hdcmi.Init.PCKPolarity = DCMI_PCKPOLARITY_RISING;
@@ -47,6 +54,9 @@ void MX_DCMI_Init(void)
   {
     Error_Handler();
   }
+  /* USER CODE BEGIN DCMI_Init 2 */
+
+  /* USER CODE END DCMI_Init 2 */
 
 }
 
